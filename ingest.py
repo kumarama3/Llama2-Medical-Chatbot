@@ -3,17 +3,25 @@ from langchain.vectorstores import FAISS
 from langchain.document_loaders import PyPDFLoader, DirectoryLoader,WebBaseLoader,TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter 
 
-DATA_PATH = 'data/'
+DATA_PATH = 'context.txt'
 DB_FAISS_PATH = 'vectorstore/db_faiss'
 
 # Create vector database
-def create_vector_db():
-    loader = DirectoryLoader(DATA_PATH,
-                             glob='*.pdf',
-                             loader_cls=PyPDFLoader)
+def create_vector_db(type_loader):
+    if type_loader == 'web_page':
+        web_links = ["https://www.buffalo.edu/studentlife/new-to-ub/first-year-and-transfer-students/faqs-orientation.html"]
+        loader = WebBaseLoader(web_links)
+        documents = loader.load()    
+    if type_loader == 'text':
+        loader = TextLoader(DATA_PATH)
+        documents = loader.load()
+    if type_loader == 'pdf':
+        loader = DirectoryLoader(DATA_PATH,
+                                 glob='*.pdf',
+                                 loader_cls=PyPDFLoader)
 
-    documents = loader.load()
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500,
+        documents = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=200,
                                                    chunk_overlap=50)
     texts = text_splitter.split_documents(documents)
 
