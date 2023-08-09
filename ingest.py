@@ -1,6 +1,6 @@
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
-from langchain.document_loaders import PyPDFLoader, DirectoryLoader
+from langchain.document_loaders import PyPDFLoader, DirectoryLoader,WebBaseLoader,TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter 
 
 DATA_PATH = 'data/'
